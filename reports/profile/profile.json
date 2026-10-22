@@ -1,0 +1,651 @@
+{
+  "provenance": {
+    "sha256": {
+      "src/titan.cpp": "58fd3e6478a169e2e4f81cba11c7fb20c50101d025f685b1ff0bab7410506f5d",
+      "src/titan.hpp": "a6530452c71c4c051202b26038f9dbefbfd7a234838da6dc4f6f4f5e8aec80f6",
+      "src/main.cpp": "f393cde51f8caa9582e713b93439cd01daeb34a696b2085b4b72d6ee1856c56a",
+      "CMakeLists.txt": "0c6dd79645a2e24eb4d0de9be1e6c07c0264bf4758bec485517dbfba9f161bef",
+      "pixi.lock": "38f7f0e8baa0dc1f63e5689d7fda5778464db045e90d44b42c0f26ba1ddcbb51",
+      "tests/test_yaml.py": "d8e78ab9d384d3273c4047d067e92500d11659700a76ef505feba8e4cc7dc79e",
+      "tests/README.md": "ff4836c72501e9738328716909a651196597da3dcf813d41dc6bead812282cb3",
+      "tests/profile_run.py": "cb4ce23815a24cee94a02a4e025de92709c1bf6aeb45632cfa8a708d201185bb",
+      "tests/tests.cpp": "d0079d16bd849a3db4a374694f42d67b2a3e165cc8f7554ed4331f81ed06e9f4",
+      "tests/resource_probe.cpp": "5bbce071f3c058c31558fe2cc7b021a0b61309ba719a3378d6f23f56c67d23ce",
+      "tests/no_heap.cpp": "6455c612add8dee49bf679bc30cfd9312ac224c5d9d578346afa2014c77a4722",
+      "tests/campaign.py": "850836aa9cb0ed8138a21f9ef883eed0829e2fd31945018900a6c34c1750a389"
+    },
+    "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+    "python": "3.12.15 | packaged by Anaconda, Inc. | (main, Oct  1 2026, 20:20:25) [GCC 14.3.0]",
+    "compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+  },
+  "workloads": [
+    {
+      "name": "ping",
+      "packets": 300000,
+      "input_bytes": 2700000,
+      "trials": [
+        {
+          "wall": 2.94,
+          "user": 0.53,
+          "system": 2.41,
+          "rss_kib": 3304.0
+        },
+        {
+          "wall": 2.95,
+          "user": 0.53,
+          "system": 2.42,
+          "rss_kib": 3304.0
+        },
+        {
+          "wall": 2.94,
+          "user": 0.5,
+          "system": 2.43,
+          "rss_kib": 3400.0
+        }
+      ],
+      "stacks": [
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "outer::read_bytes(int, std::span<char, 18446744073709551615ul>)"
+          ],
+          "samples": 29
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_int(titan::Output, long)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "outer::write_bytes(int, std::span<char const, 18446744073709551615ul>)",
+            "__libc_write"
+          ],
+          "samples": 95
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_hex(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "outer::write_bytes(int, std::span<char const, 18446744073709551615ul>)",
+            "__libc_write"
+          ],
+          "samples": 11
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "outer::read_bytes(int, std::span<char, 18446744073709551615ul>)",
+            "read",
+            "__libc_read"
+          ],
+          "samples": 131
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)"
+          ],
+          "samples": 9
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_hex(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "outer::write_bytes(int, std::span<char const, 18446744073709551615ul>)"
+          ],
+          "samples": 5
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)"
+          ],
+          "samples": 28
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "outer::write_bytes(int, std::span<char const, 18446744073709551615ul>)",
+            "__libc_write"
+          ],
+          "samples": 154
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "outer::write_bytes(int, std::span<char const, 18446744073709551615ul>)"
+          ],
+          "samples": 40
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)"
+          ],
+          "samples": 13
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_int(titan::Output, long)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "outer::write_bytes(int, std::span<char const, 18446744073709551615ul>)"
+          ],
+          "samples": 16
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::to_int_may_fail(std::basic_string_view<char, std::char_traits<char> >)",
+            "std::enable_if<std::__or_<std::__or_<std::is_same<std::remove_cv<long>::type, signed char>, std::is_same<std::remove_cv<long>::type, short>, std::is_same<std::remove_cv<long>::type, int>, std::is_same<std::remove_cv<long>::type, long>, std::is_same<std::remove_cv<long>::type, long long> >, std::__or_<std::is_same<std::remove_cv<long>::type, unsigned char>, std::is_same<std::remove_cv<long>::type, unsigned short>, std::is_same<std::remove_cv<long>::type, unsigned int>, std::is_same<std::remove_cv<long>::type, unsigned long>, std::is_same<std::remove_cv<long>::type, unsigned long long> >, std::is_same<char, std::remove_cv<long>::type> >::value, std::from_chars_result>::type std::from_chars<long>(char const*, char const*, long&, int)",
+            "bool std::__detail::__from_chars_alnum<true, unsigned long>(char const*&, char const*, unsigned long&, int)"
+          ],
+          "samples": 2
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "outer::read_bytes(int, std::span<char, 18446744073709551615ul>)",
+            "read",
+            "read@plt"
+          ],
+          "samples": 2
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "outer::write_bytes(int, std::span<char const, 18446744073709551615ul>)",
+            "write@plt"
+          ],
+          "samples": 2
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "std::basic_string_view<char, std::char_traits<char> >::substr(unsigned long, unsigned long) const",
+            "unsigned long const& std::min<unsigned long>(unsigned long const&, unsigned long const&)"
+          ],
+          "samples": 1
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_int(titan::Output, long)"
+          ],
+          "samples": 8
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_hex(titan::Output, std::basic_string_view<char, std::char_traits<char> >)"
+          ],
+          "samples": 3
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "std::basic_string_view<char, std::char_traits<char> >::find_first_of(char, unsigned long) const",
+            "std::basic_string_view<char, std::char_traits<char> >::find(char, unsigned long) const",
+            "std::char_traits<char>::find(char const*, unsigned long, char const&)",
+            "__memchr_avx2"
+          ],
+          "samples": 3
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_hex(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "outer::write_bytes(int, std::span<char const, 18446744073709551615ul>)",
+            "write@plt"
+          ],
+          "samples": 1
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_int(titan::Output, long)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)"
+          ],
+          "samples": 2
+        }
+      ],
+      "trace_packets": 1000,
+      "trace": "% time     seconds  usecs/call     calls    errors syscall\n------ ----------- ----------- --------- --------- ----------------\n 64.29    0.070195           3     18000           write\n 35.06    0.038283           4      9005           read\n  0.29    0.000321         321         1           execve\n  0.18    0.000193           8        22           mmap\n  0.04    0.000048           8         6           mprotect\n  0.03    0.000033           6         5           openat\n  0.02    0.000021           4         5           fstat\n  0.02    0.000018           3         5           close\n  0.01    0.000016          16         1           munmap\n  0.01    0.000012           4         3           brk\n  0.01    0.000010           5         2           pread64\n  0.00    0.000005           5         1         1 access\n  0.00    0.000004           4         1           arch_prctl\n  0.00    0.000004           4         1           futex\n  0.00    0.000004           4         1           set_robust_list\n  0.00    0.000004           4         1           prlimit64\n  0.00    0.000004           4         1           getrandom\n  0.00    0.000004           4         1           rseq\n  0.00    0.000003           3         1           set_tid_address\n------ ----------- ----------- --------- --------- ----------------\n100.00    0.109182           4     27063         1 total\n"
+    },
+    {
+      "name": "housekeeping",
+      "packets": 300000,
+      "input_bytes": 6300000,
+      "trials": [
+        {
+          "wall": 6.54,
+          "user": 1.18,
+          "system": 5.35,
+          "rss_kib": 3444.0
+        },
+        {
+          "wall": 6.57,
+          "user": 1.19,
+          "system": 5.37,
+          "rss_kib": 3348.0
+        },
+        {
+          "wall": 6.58,
+          "user": 1.15,
+          "system": 5.43,
+          "rss_kib": 3348.0
+        }
+      ],
+      "stacks": [
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "outer::read_bytes(int, std::span<char, 18446744073709551615ul>)",
+            "read",
+            "__libc_read"
+          ],
+          "samples": 308
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::decode_housekeeping_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "outer::write_bytes(int, std::span<char const, 18446744073709551615ul>)",
+            "__libc_write"
+          ],
+          "samples": 141
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "outer::read_bytes(int, std::span<char, 18446744073709551615ul>)"
+          ],
+          "samples": 64
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "std::basic_string_view<char, std::char_traits<char> >::find_first_of(char, unsigned long) const",
+            "std::basic_string_view<char, std::char_traits<char> >::find(char, unsigned long) const",
+            "std::char_traits<char>::find(char const*, unsigned long, char const&)",
+            "__memchr_avx2"
+          ],
+          "samples": 5
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "outer::write_bytes(int, std::span<char const, 18446744073709551615ul>)",
+            "__libc_write"
+          ],
+          "samples": 159
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)"
+          ],
+          "samples": 54
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_int(titan::Output, long)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "outer::write_bytes(int, std::span<char const, 18446744073709551615ul>)",
+            "__libc_write"
+          ],
+          "samples": 95
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::decode_housekeeping_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)"
+          ],
+          "samples": 16
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::decode_housekeeping_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_int(titan::Output, long)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "outer::write_bytes(int, std::span<char const, 18446744073709551615ul>)",
+            "__libc_write"
+          ],
+          "samples": 157
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)"
+          ],
+          "samples": 16
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_int(titan::Output, long)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "outer::write_bytes(int, std::span<char const, 18446744073709551615ul>)"
+          ],
+          "samples": 21
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "outer::read_bytes(int, std::span<char, 18446744073709551615ul>)",
+            "read"
+          ],
+          "samples": 3
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::decode_housekeeping_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_int(titan::Output, long)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "outer::write_bytes(int, std::span<char const, 18446744073709551615ul>)"
+          ],
+          "samples": 24
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_hex(titan::Output, std::basic_string_view<char, std::char_traits<char> >)"
+          ],
+          "samples": 9
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::decode_housekeeping_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "outer::write_bytes(int, std::span<char const, 18446744073709551615ul>)"
+          ],
+          "samples": 29
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::decode_housekeeping_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_int(titan::Output, long)"
+          ],
+          "samples": 17
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::decode_housekeeping_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "std::basic_string_view<char, std::char_traits<char> >::find_first_of(char, unsigned long) const",
+            "std::basic_string_view<char, std::char_traits<char> >::find(char, unsigned long) const",
+            "std::char_traits<char>::find(char const*, unsigned long, char const&)",
+            "__memchr_avx2"
+          ],
+          "samples": 10
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_hex(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "outer::write_bytes(int, std::span<char const, 18446744073709551615ul>)"
+          ],
+          "samples": 3
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::decode_housekeeping_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)"
+          ],
+          "samples": 2
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "outer::write_bytes(int, std::span<char const, 18446744073709551615ul>)"
+          ],
+          "samples": 24
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_hex(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "outer::write_bytes(int, std::span<char const, 18446744073709551615ul>)",
+            "__libc_write"
+          ],
+          "samples": 17
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "outer::write_bytes(int, std::span<char const, 18446744073709551615ul>)",
+            "write@plt"
+          ],
+          "samples": 1
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_int(titan::Output, long)",
+            "std::to_chars(char*, char*, long, int)",
+            "std::enable_if<std::__or_<std::__or_<std::is_same<std::remove_cv<long>::type, signed char>, std::is_same<std::remove_cv<long>::type, short>, std::is_same<std::remove_cv<long>::type, int>, std::is_same<std::remove_cv<long>::type, long>, std::is_same<std::remove_cv<long>::type, long long> >, std::__or_<std::is_same<std::remove_cv<long>::type, unsigned char>, std::is_same<std::remove_cv<long>::type, unsigned short>, std::is_same<std::remove_cv<long>::type, unsigned int>, std::is_same<std::remove_cv<long>::type, unsigned long>, std::is_same<std::remove_cv<long>::type, unsigned long long> >, std::is_same<long, __int128>, std::is_same<long, unsigned __int128>, std::is_same<char, std::remove_cv<long>::type> >::value, std::to_chars_result>::type std::__to_chars_i<long>(char*, char*, long, int)",
+            "std::enable_if<std::__or_<std::__or_<std::is_same<std::remove_cv<unsigned long>::type, signed char>, std::is_same<std::remove_cv<unsigned long>::type, short>, std::is_same<std::remove_cv<unsigned long>::type, int>, std::is_same<std::remove_cv<unsigned long>::type, long>, std::is_same<std::remove_cv<unsigned long>::type, long long> >, std::__or_<std::is_same<std::remove_cv<unsigned long>::type, unsigned char>, std::is_same<std::remove_cv<unsigned long>::type, unsigned short>, std::is_same<std::remove_cv<unsigned long>::type, unsigned int>, std::is_same<std::remove_cv<unsigned long>::type, unsigned long>, std::is_same<std::remove_cv<unsigned long>::type, unsigned long long> >, std::is_same<unsigned long, __int128>, std::is_same<unsigned long, unsigned __int128>, std::is_same<char, std::remove_cv<unsigned long>::type> >::value, std::to_chars_result>::type std::__detail::__to_chars_10<unsigned long>(char*, char*, unsigned long)"
+          ],
+          "samples": 1
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::decode_housekeeping_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "std::span<char const, 18446744073709551615ul>::span<char const*>(char const*, unsigned long)"
+          ],
+          "samples": 6
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::decode_housekeeping_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_int(titan::Output, long)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)"
+          ],
+          "samples": 1
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)"
+          ],
+          "samples": 17
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_int(titan::Output, long)"
+          ],
+          "samples": 7
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::decode_housekeeping_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "outer::write_bytes(int, std::span<char const, 18446744073709551615ul>)",
+            "write@plt"
+          ],
+          "samples": 2
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_int(titan::Output, long)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "outer::write_bytes(int, std::span<char const, 18446744073709551615ul>)",
+            "write@plt"
+          ],
+          "samples": 2
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_int(titan::Output, long)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)"
+          ],
+          "samples": 1
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::decode_housekeeping_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_int(titan::Output, long)",
+            "titan::put_msg(titan::Output, std::basic_string_view<char, std::char_traits<char> >)",
+            "outer::write_bytes(int, std::span<char const, 18446744073709551615ul>)",
+            "write@plt"
+          ],
+          "samples": 1
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_int(titan::Output, long)",
+            "std::to_chars(char*, char*, long, int)",
+            "std::enable_if<std::__or_<std::__or_<std::is_same<std::remove_cv<long>::type, signed char>, std::is_same<std::remove_cv<long>::type, short>, std::is_same<std::remove_cv<long>::type, int>, std::is_same<std::remove_cv<long>::type, long>, std::is_same<std::remove_cv<long>::type, long long> >, std::__or_<std::is_same<std::remove_cv<long>::type, unsigned char>, std::is_same<std::remove_cv<long>::type, unsigned short>, std::is_same<std::remove_cv<long>::type, unsigned int>, std::is_same<std::remove_cv<long>::type, unsigned long>, std::is_same<std::remove_cv<long>::type, unsigned long long> >, std::is_same<long, __int128>, std::is_same<long, unsigned __int128>, std::is_same<char, std::remove_cv<long>::type> >::value, std::to_chars_result>::type std::__to_chars_i<long>(char*, char*, long, int)",
+            "std::enable_if<std::__or_<std::__or_<std::is_same<std::remove_cv<unsigned long>::type, signed char>, std::is_same<std::remove_cv<unsigned long>::type, short>, std::is_same<std::remove_cv<unsigned long>::type, int>, std::is_same<std::remove_cv<unsigned long>::type, long>, std::is_same<std::remove_cv<unsigned long>::type, long long> >, std::__or_<std::is_same<std::remove_cv<unsigned long>::type, unsigned char>, std::is_same<std::remove_cv<unsigned long>::type, unsigned short>, std::is_same<std::remove_cv<unsigned long>::type, unsigned int>, std::is_same<std::remove_cv<unsigned long>::type, unsigned long>, std::is_same<std::remove_cv<unsigned long>::type, unsigned long long> >, std::is_same<unsigned long, __int128>, std::is_same<unsigned long, unsigned __int128>, std::is_same<char, std::remove_cv<unsigned long>::type> >::value, std::to_chars_result>::type std::__detail::__to_chars_10<unsigned long>(char*, char*, unsigned long)",
+            "void std::__detail::__to_chars_10_impl<unsigned long>(char*, unsigned int, unsigned long)"
+          ],
+          "samples": 2
+        },
+        {
+          "frames": [
+            "main",
+            "titan::depacket_and_output(titan::Input, titan::Output, titan::Output, titan::Workspace&)",
+            "titan::decode_header_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::decode_housekeeping_and_output(titan::Output, titan::Output, titan::Workspace&, std::basic_string_view<char, std::char_traits<char> >)",
+            "titan::put_int(titan::Output, long)",
+            "std::to_chars(char*, char*, long, int)",
+            "std::enable_if<std::__or_<std::__or_<std::is_same<std::remove_cv<long>::type, signed char>, std::is_same<std::remove_cv<long>::type, short>, std::is_same<std::remove_cv<long>::type, int>, std::is_same<std::remove_cv<long>::type, long>, std::is_same<std::remove_cv<long>::type, long long> >, std::__or_<std::is_same<std::remove_cv<long>::type, unsigned char>, std::is_same<std::remove_cv<long>::type, unsigned short>, std::is_same<std::remove_cv<long>::type, unsigned int>, std::is_same<std::remove_cv<long>::type, unsigned long>, std::is_same<std::remove_cv<long>::type, unsigned long long> >, std::is_same<long, __int128>, std::is_same<long, unsigned __int128>, std::is_same<char, std::remove_cv<long>::type> >::value, std::to_chars_result>::type std::__to_chars_i<long>(char*, char*, long, int)",
+            "std::enable_if<std::__or_<std::__or_<std::is_same<std::remove_cv<unsigned long>::type, signed char>, std::is_same<std::remove_cv<unsigned long>::type, short>, std::is_same<std::remove_cv<unsigned long>::type, int>, std::is_same<std::remove_cv<unsigned long>::type, long>, std::is_same<std::remove_cv<unsigned long>::type, long long> >, std::__or_<std::is_same<std::remove_cv<unsigned long>::type, unsigned char>, std::is_same<std::remove_cv<unsigned long>::type, unsigned short>, std::is_same<std::remove_cv<unsigned long>::type, unsigned int>, std::is_same<std::remove_cv<unsigned long>::type, unsigned long>, std::is_same<std::remove_cv<unsigned long>::type, unsigned long long> >, std::is_same<unsigned long, __int128>, std::is_same<unsigned long, unsigned __int128>, std::is_same<char, std::remove_cv<unsigned long>::type> >::value, std::to_chars_result>::type std::__detail::__to_chars_10<unsigned long>(char*, char*, unsigned long)",
+            "unsigned int std::__detail::__to_chars_len<unsigned long>(unsigned long, int)"
+          ],
+          "samples": 1
+        }
+      ],
+      "trace_packets": 1000,
+      "trace": "% time     seconds  usecs/call     calls    errors syscall\n------ ----------- ----------- --------- --------- ----------------\n 62.22    0.147612           3     38000           write\n 37.61    0.089232           4     21005           read\n  0.08    0.000183           8        22           mmap\n  0.02    0.000052           8         6           mprotect\n  0.01    0.000035           7         5           openat\n  0.01    0.000022           4         5           fstat\n  0.01    0.000019           3         5           close\n  0.01    0.000015          15         1           munmap\n  0.00    0.000010           3         3           brk\n  0.00    0.000010          10         1         1 access\n  0.00    0.000009           4         2           pread64\n  0.00    0.000004           4         1           arch_prctl\n  0.00    0.000004           4         1           futex\n  0.00    0.000004           4         1           set_robust_list\n  0.00    0.000004           4         1           prlimit64\n  0.00    0.000004           4         1           getrandom\n  0.00    0.000004           4         1           rseq\n  0.00    0.000003           3         1           set_tid_address\n  0.00    0.000000           0         1           execve\n------ ----------- ----------- --------- --------- ----------------\n100.00    0.237226           4     59063         1 total\n"
+    }
+  ],
+  "notes": [
+    "Normal timings use an uninstrumented Release binary and /dev/null output.",
+    "strace uses a smaller workload; its timings include tracing effects and are not normal-run cost estimates.",
+    "perf samples userspace only. Kernel CPU time is measured separately; it is not present in the flame graph."
+  ],
+  "perf_available": true,
+  "executables": {
+    "<repo>/build-autotests/recode": "cbd5caff157ed2ed3e8d37f6e969248a4a47709d4cf8ce812bf3848f463d8255",
+    "<repo>/build-autotests-profile/recode": "a7f0963218570d0beee752d75ab29061397527b956ff4da0432064ed2f27cd2f"
+  }
+}

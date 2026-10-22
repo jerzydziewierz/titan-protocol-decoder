@@ -1,0 +1,53 @@
+{
+  "provenance": {
+    "sha256": {
+      "src/titan.cpp": "58fd3e6478a169e2e4f81cba11c7fb20c50101d025f685b1ff0bab7410506f5d",
+      "src/titan.hpp": "a6530452c71c4c051202b26038f9dbefbfd7a234838da6dc4f6f4f5e8aec80f6",
+      "src/main.cpp": "f393cde51f8caa9582e713b93439cd01daeb34a696b2085b4b72d6ee1856c56a",
+      "CMakeLists.txt": "0c6dd79645a2e24eb4d0de9be1e6c07c0264bf4758bec485517dbfba9f161bef",
+      "pixi.lock": "38f7f0e8baa0dc1f63e5689d7fda5778464db045e90d44b42c0f26ba1ddcbb51",
+      "tests/test_yaml.py": "d8e78ab9d384d3273c4047d067e92500d11659700a76ef505feba8e4cc7dc79e",
+      "tests/README.md": "ff4836c72501e9738328716909a651196597da3dcf813d41dc6bead812282cb3",
+      "tests/profile_run.py": "cb4ce23815a24cee94a02a4e025de92709c1bf6aeb45632cfa8a708d201185bb",
+      "tests/tests.cpp": "d0079d16bd849a3db4a374694f42d67b2a3e165cc8f7554ed4331f81ed06e9f4",
+      "tests/resource_probe.cpp": "5bbce071f3c058c31558fe2cc7b021a0b61309ba719a3378d6f23f56c67d23ce",
+      "tests/no_heap.cpp": "6455c612add8dee49bf679bc30cfd9312ac224c5d9d578346afa2014c77a4722",
+      "tests/campaign.py": "850836aa9cb0ed8138a21f9ef883eed0829e2fd31945018900a6c34c1750a389"
+    },
+    "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+    "python": "3.12.15 | packaged by Anaconda, Inc. | (main, Oct  1 2026, 20:20:25) [GCC 14.3.0]",
+    "compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+  },
+  "results": {
+    "build-autotests/titan-tests": {
+      "exit": 0,
+      "seconds": 0.020407522999448702,
+      "log": "build-autotests-titan-tests.log"
+    },
+    "build-autotests/titan-no-heap": {
+      "exit": 0,
+      "seconds": 0.020421523000550224,
+      "log": "build-autotests-titan-no-heap.log"
+    },
+    "build-autotests/python": {
+      "exit": 1,
+      "seconds": 1.5662556049974228,
+      "log": "build-autotests-python.log"
+    },
+    "build-autotests-sanitize/titan-tests": {
+      "exit": 0,
+      "seconds": 0.020450643998628948,
+      "log": "build-autotests-sanitize-titan-tests.log"
+    },
+    "build-autotests-sanitize/titan-no-heap": {
+      "exit": 0,
+      "seconds": 0.020390762001625262,
+      "log": "build-autotests-sanitize-titan-no-heap.log"
+    },
+    "build-autotests-sanitize/python": {
+      "exit": 1,
+      "seconds": 6.364931337000598,
+      "log": "build-autotests-sanitize-python.log"
+    }
+  }
+}

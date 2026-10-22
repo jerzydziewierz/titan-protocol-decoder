@@ -1,0 +1,2 @@
+[ perf record: Woken up 19 times to write data ]
+[ perf record: Captured and wrote 4.466 MB <repo>/reports/profile/ping.perf.data (555 samples) ]

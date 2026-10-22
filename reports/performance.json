@@ -1,0 +1,124 @@
+{
+  "provenance": {
+    "sha256": {
+      "src/titan.cpp": "58fd3e6478a169e2e4f81cba11c7fb20c50101d025f685b1ff0bab7410506f5d",
+      "src/titan.hpp": "a6530452c71c4c051202b26038f9dbefbfd7a234838da6dc4f6f4f5e8aec80f6",
+      "src/main.cpp": "f393cde51f8caa9582e713b93439cd01daeb34a696b2085b4b72d6ee1856c56a",
+      "CMakeLists.txt": "0c6dd79645a2e24eb4d0de9be1e6c07c0264bf4758bec485517dbfba9f161bef",
+      "pixi.lock": "38f7f0e8baa0dc1f63e5689d7fda5778464db045e90d44b42c0f26ba1ddcbb51",
+      "tests/test_yaml.py": "d8e78ab9d384d3273c4047d067e92500d11659700a76ef505feba8e4cc7dc79e",
+      "tests/README.md": "ff4836c72501e9738328716909a651196597da3dcf813d41dc6bead812282cb3",
+      "tests/profile_run.py": "cb4ce23815a24cee94a02a4e025de92709c1bf6aeb45632cfa8a708d201185bb",
+      "tests/tests.cpp": "d0079d16bd849a3db4a374694f42d67b2a3e165cc8f7554ed4331f81ed06e9f4",
+      "tests/resource_probe.cpp": "5bbce071f3c058c31558fe2cc7b021a0b61309ba719a3378d6f23f56c67d23ce",
+      "tests/no_heap.cpp": "6455c612add8dee49bf679bc30cfd9312ac224c5d9d578346afa2014c77a4722",
+      "tests/campaign.py": "850836aa9cb0ed8138a21f9ef883eed0829e2fd31945018900a6c34c1750a389"
+    },
+    "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+    "python": "3.12.15 | packaged by Anaconda, Inc. | (main, Oct  1 2026, 20:20:25) [GCC 14.3.0]",
+    "compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+  },
+  "results": [
+    {
+      "workload": "ping",
+      "bytes": 900000,
+      "packets": 100000,
+      "sha256": "d1e6ba0e074f35e41215951652e2989d830645b3c15d18689e8b97485ef8e4ba",
+      "trials": [
+        {
+          "seconds": 1.0045877550001023,
+          "user_seconds": 0.19,
+          "system_seconds": 0.79,
+          "max_rss_kib": 3400.0,
+          "exit": 0
+        },
+        {
+          "seconds": 1.004699506000179,
+          "user_seconds": 0.18,
+          "system_seconds": 0.79,
+          "max_rss_kib": 3552.0,
+          "exit": 0
+        },
+        {
+          "seconds": 1.004856095998548,
+          "user_seconds": 0.2,
+          "system_seconds": 0.78,
+          "max_rss_kib": 3416.0,
+          "exit": 0
+        }
+      ],
+      "median_mib_s": 0.8542921337571275,
+      "median_packets_s": 99532.2476051682
+    },
+    {
+      "workload": "housekeeping",
+      "bytes": 2100000,
+      "packets": 100000,
+      "sha256": "b589aae8f9ab86f066a6913d81e2a134d2fdb9724a2621807a2cb961179c7bca",
+      "trials": [
+        {
+          "seconds": 2.210946237002645,
+          "user_seconds": 0.41,
+          "system_seconds": 1.77,
+          "max_rss_kib": 3432.0,
+          "exit": 0
+        },
+        {
+          "seconds": 2.2106464440003037,
+          "user_seconds": 0.41,
+          "system_seconds": 1.78,
+          "max_rss_kib": 3400.0,
+          "exit": 0
+        },
+        {
+          "seconds": 2.1901040649972856,
+          "user_seconds": 0.4,
+          "system_seconds": 1.78,
+          "max_rss_kib": 3436.0,
+          "exit": 0
+        }
+      ],
+      "median_mib_s": 0.9059413683669308,
+      "median_packets_s": 45235.63696555823
+    },
+    {
+      "workload": "malformed",
+      "bytes": 800000,
+      "packets": 100000,
+      "sha256": "3da5676327ed494852e357190ad19cd71386bc91aa44da1e555e9d91306bfd09",
+      "trials": [
+        {
+          "seconds": 0.4822576160004246,
+          "user_seconds": 0.05,
+          "system_seconds": 0.4,
+          "max_rss_kib": 3528.0,
+          "exit": 0
+        },
+        {
+          "seconds": 0.46207100999890827,
+          "user_seconds": 0.05,
+          "system_seconds": 0.4,
+          "max_rss_kib": 3340.0,
+          "exit": 0
+        },
+        {
+          "seconds": 0.46206052900015493,
+          "user_seconds": 0.05,
+          "system_seconds": 0.4,
+          "max_rss_kib": 3396.0,
+          "exit": 0
+        }
+      ],
+      "median_mib_s": 1.6511303168030442,
+      "median_packets_s": 216416.9528840086
+    }
+  ],
+  "callback_metrics": {
+    "packets": 100000,
+    "read_calls": 900001,
+    "write_calls": 1800000,
+    "output_bytes": 11700000,
+    "workspace_bytes": 81920
+  },
+  "note": "Includes startup and syscalls, ~20ms polling resolution. Malformed throughput measures discarding, not successful archival conversion."
+}

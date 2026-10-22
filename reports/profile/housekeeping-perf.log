@@ -1,0 +1,2 @@
+[ perf record: Woken up 38 times to write data ]
+[ perf record: Captured and wrote 9.776 MB <repo>/reports/profile/housekeeping.perf.data (1216 samples) ]

@@ -1,0 +1,11 @@
+
+ Performance counter stats for 'true':
+
+              0.33 msec task-clock:u                                                          
+
+       0.001753235 seconds time elapsed
+
+       0.000000000 seconds user
+       0.001480000 seconds sys
+
+

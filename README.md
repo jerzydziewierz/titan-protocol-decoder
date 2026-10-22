@@ -1,52 +1,127 @@
+# This is the `autotests` branch
+
+Do NOT merge into `handmade` branch!
+
+see the `README.md` in `handmade` branch for why.
+
+
 # What is this
 
-There are two branches here:
-* Handmade -- everything was written by hand.
-* Auto -- I have used tooling to build wide range of tests.
+This test suite tests for the following:
 
-# Assumptions
-
-The original challenge is internally inconsistent: `README.md` , the `titan-encoder/*.py` files and the `titan-protocol/titan-protocol-capture.txt` disagree as to the details of the protocol.
-
-Moreover, the output format is undefined. 
-
-The challenge verbal instructions call for a "production ready" code, however, there are many unknowns that would normally get resolved by discussing the requirement set with the client.
-in particular, the following is unclear:
-* Whether this is for a new product, maintenance of existing product, or archival data exploration
-* Whether the code is to run on a HPC cluster or on a low-end microcontroller
-* Whether there could be a maliciously crafted data, or is the data source trusted
-* What kind of damage could occur to the data in transport
-* Whether to accept valid packets only, or to attempt recover any leftover data from damaged packets. 
-
-Hence, the following assumptions have been added:
-
-* Lenient interpretation of the protocol mostly based on the `titan-protocol-capture.txt` and it is assumed that all of it is correct
-* Strict-like mode: accept valid packets only, discard entire packet on a first smell of trouble
-* Heap-less code (no memory allocations)
-
+* General correctness of the output
+* Adversarial testing to find any memory problems
+* Adversarial testing with damaged input data
+* Performance testing
 
 # Known problems
 
 * For an overall invalid packet where the header is good, but the payload data (e.g. housekeeping data) is damaged, the program will output partial output.
-  * Workaround: None
-  * To Do: there are at least 3 solutions to this; preferably, upgrade the writer object to support transactional mode, where output contents are buffered and then in the end can be commited or discarded at any time.
-* Performance: this version has been written for simplicity. There are known ways this could be much faster:
-  * Workaround: None 
-  * To Do: buffered reads. Then, re-profile.
+    * Workaround: None
+    * To Do: there are at least 3 solutions to this; preferably, upgrade the writer object to support transactional mode, where output contents are buffered and then in the end can be commited or discarded at any time.
 
-# Demonstration
+# What is being tested
 
-The following is required:
-* C++20 compiler
-* POSIX OS, e.g. ubuntu linux
-* cmake >3.16
-* bash
+## How to run
 
-3 scripts are provided in the repo root:
-* `build.sh` : uses cmake to build the source code
-* `run.sh` : assuming that build.sh succeeded, runs the code to process `data/titan-protocol-capture.txt` into `results/result.yaml`; also outputs `yaml` to `stdout`
-* `clean.sh` : deletes the `build` folder and results/result.yaml
+Requirements in addition to the `handmade` ones: `pixi` (the environment uses the Anaconda `main` channel only), and `/usr/bin/time`, `strace` and `perf` for the benchmark and profile stages.
 
-# Test suite
+* `./test.sh` : runs ALL tests in extensive mode and continues after a failed stage. It prints a PASS/FAIL summary and returns nonzero if a stage failed. It takes about 2–3 minutes. Set `HYPOTHESIS_MAX_EXAMPLES` to change the property-test depth (default 2000).
+* `pixi run check` : the normal (non-extensive) correctness run. `ctest --test-dir build-autotests --output-on-failure` runs the C++ suites only.
+* `pixi run status` / `pixi run stop` : show or stop a running campaign, from a second terminal.
 
-Tests have been built with tooling, hence, they are held in separate branch, `autotests`
+`./test.sh` runs these stages:
+
+| Stage                | What it does                                                                                                                                           | Output in `reports/`                    |
+|----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------|
+| check                | Builds a Release tree and an ASan/UBSan tree. In each tree, runs the C++ assertions, the no-heap guard and the Python suite (100 Hypothesis examples). | `checks.json`, `build-autotests*-*.log` |
+| extensive Hypothesis | Runs the Python suite again in both trees with 2000 examples for each property.                                                                        | `extensive-build-autotests*-python.log` |
+| mutation             | Compiles changed copies of `src/titan.cpp` against the C++ assertions. A mutation is killed when it causes new named failures.                         | `mutations.json`, `mutation-*.log`      |
+| benchmark            | 100,000 packets for each workload (ping, housekeeping, malformed), three trials, output to `/dev/null`. It also counts read/write calls.               | `performance.json`                      |
+| profile              | Timings, user/kernel CPU split, syscall counts, and a flame graph if `perf` access is permitted.                                                       | `profile/index.html`                    |
+
+### Enable `perf` temporarily (for the flame graph)
+
+Ubuntu sets `kernel.perf_event_paranoid` to 4 by default. At this level, `perf` cannot sample, so the profile report has no flame graph (`reports/profile/perf-access.log` records the reason). Level 2 lets a user profile their own processes in user space. Kernel profiling stays blocked at this level. The change needs sudo and lasts until the next reboot:
+
+```sh
+cat /proc/sys/kernel/perf_event_paranoid               # record the current value, e.g. 4
+sudo sysctl -w kernel.perf_event_paranoid=2
+pixi run profile                                       # or ./test.sh
+sudo sysctl -w kernel.perf_event_paranoid=4            # restore the recorded value
+```
+
+Do not write the setting to `/etc/sysctl.d/`; that makes it permanent.
+
+`DEFECTS.md` lists the defects that the tests find now. `tests/README.md` has the full test contract and the limits of the evidence.
+
+## Test files
+
+| File | Kind | Runs in |
+| --- | --- | --- |
+| `tests/tests.cpp` | C++ unit and fault-injection assertions against the library API | `titan-tests` (ctest `learned-decoder`), mutation |
+| `tests/no_heap.cpp` | Heap guard: wraps `malloc`/`calloc`/`realloc`/`free` and `new` | `titan-no-heap` (ctest `learned-no-heap`) |
+| `tests/test_yaml.py` | Black-box tests of the `recode` CLI: YAML output, Hypothesis properties, input mutation | check, extensive Hypothesis |
+| `tests/resource_probe.cpp` | Counts read/write callback calls and output bytes | benchmark |
+| `tests/campaign.py`, `tests/profile_run.py` | Campaign driver: builds, runs, mutates, measures, writes reports | all `pixi run` tasks |
+
+## Short descriptor for each test intent
+
+### `tests/tests.cpp` (C++ assertions)
+
+* Integer conversion: consume the whole field and cover the signed 64-bit limits.
+* Integer rejection: reject syntax noise, embedded NUL, and overflow in both directions.
+* Fixed-width formatting: keep the rightmost eight characters of a diagnostic number.
+* Hex escaping: show every byte value 0–255 as uppercase hex, including control and high-bit bytes.
+* Hex preview: exact length limits and an explicit truncation marker.
+* `put_msg`: keep the length, including embedded NUL; do not stop at a terminator.
+* Empty input: successful empty input emits no packet.
+* Workspace reuse: a second conversion does not show fields from the previous one.
+* Read failure: a failure at each read position propagates through the public decoder API.
+* Read contract: a reader that reports more bytes than the one-byte destination holds is rejected.
+* Write failure: a failure at each write position stops conversion and returns an output error.
+* Packet boundary: a canary next to the input buffer detects an overflow that ASan cannot see (fields in the same object). Packets of 16383 to 16386 bytes; 16384 and larger are rejected as oversize.
+* Housekeeping parsing: reject missing, malformed and surplus fields.
+* Header errors: report the error before an incomplete record is emitted.
+* Payload errors: an invalid housekeeping payload stays visible to the caller of the header layer.
+
+### `tests/no_heap.cpp`
+
+* Self-check: the guard detects a forbidden `malloc` and `new`.
+* No heap: ping, housekeeping, empty, NUL-containing and empty-input conversions make no heap call, in the success, read-failure and write-failure paths.
+
+### `tests/test_yaml.py` (CLI and YAML output)
+
+* `test_loader`: the test YAML loader rejects duplicate keys.
+* `test_ping`: a ping record matches known values in the flat schema.
+* `test_ping_payload`: an opaque ping payload is shown as a bounded hex preview.
+* `test_housekeeping`: signed housekeeping values and both housekeeping IDs (10, 12) are kept.
+* `test_generated_ping` (Hypothesis): headers round-trip over the full display range.
+* `test_generated_housekeeping` (Hypothesis): generated signed fields go to the correct keys.
+* `test_newline_noise`: CR/LF outside packets does not change the records.
+* `test_malformed_dropped`: malformed and incomplete packets are dropped, and the next valid packet is decoded.
+* `test_each_binary_byte`: each non-decimal byte in a numeric field is rejected.
+* `test_arbitrary_binary` (Hypothesis): arbitrary bytes terminate and give parseable, control-safe YAML.
+* `test_binary_recovery` (Hypothesis): a valid packet after arbitrary bytes is recovered.
+* `test_truncation_yaml`: eight-character truncation keeps the space after the YAML colon.
+* `test_capture`: the supplied capture gives one record for each complete packet.
+* `test_input_mutations`: deleted, inserted, replaced and flipped bytes do not stop a trailing valid packet.
+* `test_oversized_recovery`: an oversized packet is dropped and the next valid packet is decoded.
+* `test_locale`: the process locale does not change the number format.
+* `test_cli_arguments`: extra CLI arguments are rejected, not read as input paths.
+* `test_closed_stdin`: a failed read gives a nonzero exit status.
+* `test_full_output_device`: a write to a full device (ENOSPC) gives a nonzero exit status.
+
+### Mutation campaign (`tests/campaign.py mutation`)
+
+Each mutation must be killed by the C++ assertions: 
+* accept a numeric suffix, 
+* drop the integer sign, 
+* preview 31 bytes instead of 32, 
+* wrong hex nibble, 
+* hide a read failure, 
+* reject valid housekeeping, 
+* wrong start marker, 
+* wrong end marker, 
+* skip the first payload byte, 
+* off-by-one at the packet-size limit.

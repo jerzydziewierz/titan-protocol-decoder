@@ -2,3 +2,13 @@ tmp/
 .idea
 results/result.yaml
 
+.pixi/
+/build-autotests*/
+/tests/__pycache__/
+/tests/.hypothesis/
+/.hypothesis/
+/reports/running.json
+/reports/stop.request
+/build/*
+/reports/**/*.perf.data
+/reports/**/*.perf.data.old

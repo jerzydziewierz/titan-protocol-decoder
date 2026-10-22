@@ -1,0 +1,393 @@
+test_arbitrary_binary (__main__.OutputTests.test_arbitrary_binary)
+Brutal arbitrary bytes must terminate and emit parseable, control-safe YAML. ... ok
+test_binary_recovery (__main__.OutputTests.test_binary_recovery)
+A known good packet after arbitrary bytes must still be recovered. ... ok
+test_capture (__main__.OutputTests.test_capture)
+The supplied capture must yield one record per complete delimited packet. ... ok
+test_cli_arguments (__main__.OutputTests.test_cli_arguments)
+Reject extra CLI arguments rather than interpreting them as input paths. ... ok
+test_closed_stdin (__main__.OutputTests.test_closed_stdin)
+A failed POSIX read must produce a nonzero CLI exit status. ... ok
+test_each_binary_byte (__main__.OutputTests.test_each_binary_byte)
+Each non-delimiter byte in a numeric field must be rejected unless decimal. ... ok
+test_full_output_device (__main__.OutputTests.test_full_output_device)
+An ENOSPC write must not be reported as successful conversion. ... ok
+test_generated_housekeeping (__main__.OutputTests.test_generated_housekeeping)
+Generated signed fields must stay in the correct destinations. ... ERROR
+test_generated_ping (__main__.OutputTests.test_generated_ping)
+Round-trip headers across the entire untruncated display range. ... ok
+test_housekeeping (__main__.OutputTests.test_housekeeping)
+Preserve signed payload values and both accepted housekeeping IDs. ... ok
+test_input_mutations (__main__.OutputTests.test_input_mutations)
+Delete, insert, replace and flip bytes; a trailing good packet must survive. ... ok
+test_loader (__main__.OutputTests.test_loader)
+Check that the test oracle detects duplicate mapping keys. ... ok
+test_locale (__main__.OutputTests.test_locale)
+Available process locales must not alter numeric serialization. ... ok
+test_malformed_dropped (__main__.OutputTests.test_malformed_dropped)
+Drop malformed and incomplete packets, then recover the next valid packet. ... 
+  test_malformed_dropped (__main__.OutputTests.test_malformed_dropped) (packet=b'$10;2;3;0;bad;|')
+Drop malformed and incomplete packets, then recover the next valid packet. ... FAIL
+  test_malformed_dropped (__main__.OutputTests.test_malformed_dropped) (packet=b'$1;-1;2;;|')
+Drop malformed and incomplete packets, then recover the next valid packet. ... FAIL
+  test_malformed_dropped (__main__.OutputTests.test_malformed_dropped) (packet=b'$99;2;3;|')
+Drop malformed and incomplete packets, then recover the next valid packet. ... FAIL
+  test_malformed_dropped (__main__.OutputTests.test_malformed_dropped) (packet=b'$10;2;3;0;1;2;3;4;5;|')
+Drop malformed and incomplete packets, then recover the next valid packet. ... FAIL
+test_newline_noise (__main__.OutputTests.test_newline_noise)
+Ignore CR/LF outside complete packets without changing their records. ... ok
+test_oversized_recovery (__main__.OutputTests.test_oversized_recovery)
+Drop oversized packets and recover the following valid packet. ... ok
+test_ping (__main__.OutputTests.test_ping)
+Anchor the flat schema to independently written known values. ... ok
+test_ping_payload (__main__.OutputTests.test_ping_payload)
+Accept opaque ping payloads and display their bounded hexadecimal preview. ... ok
+test_truncation_yaml (__main__.OutputTests.test_truncation_yaml)
+Display truncation must not accidentally remove YAML's required key spacing. ... 
+  test_truncation_yaml (__main__.OutputTests.test_truncation_yaml) (value=12345678)
+Display truncation must not accidentally remove YAML's required key spacing. ... ERROR
+  test_truncation_yaml (__main__.OutputTests.test_truncation_yaml) (value=123456789)
+Display truncation must not accidentally remove YAML's required key spacing. ... ERROR
+  test_truncation_yaml (__main__.OutputTests.test_truncation_yaml) (value=-1234567)
+Display truncation must not accidentally remove YAML's required key spacing. ... ERROR
+  test_truncation_yaml (__main__.OutputTests.test_truncation_yaml) (value=-123456789)
+Display truncation must not accidentally remove YAML's required key spacing. ... ERROR
+
+======================================================================
+ERROR: test_generated_housekeeping (__main__.OutputTests.test_generated_housekeeping)
+Generated signed fields must stay in the correct destinations.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/tests/test_yaml.py", line 96, in test_generated_housekeeping
+    def test_generated_housekeeping(self, values):
+               ^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/hypothesis/core.py", line 2295, in wrapped_test
+    raise the_error_hypothesis_found
+  File "<repo>/tests/test_yaml.py", line 99, in test_generated_housekeeping
+    r = records(packet.encode())[0]
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/tests/test_yaml.py", line 48, in records
+    value = yaml.load(result.stdout, Loader=UniqueLoader)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/__init__.py", line 81, in load
+    return loader.get_single_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/constructor.py", line 49, in get_single_data
+    node = self.get_single_node()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 36, in get_single_node
+    document = self.compose_document()
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 55, in compose_document
+    node = self.compose_node(None, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 82, in compose_node
+    node = self.compose_sequence_node(anchor)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 111, in compose_sequence_node
+    node.value.append(self.compose_node(node, index))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 127, in compose_mapping_node
+    while not self.check_event(MappingEndEvent):
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/parser.py", line 98, in check_event
+    self.current_event = self.state()
+                         ^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/parser.py", line 428, in parse_block_mapping_key
+    if self.check_token(KeyToken):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/scanner.py", line 115, in check_token
+    while self.need_more_tokens():
+          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/scanner.py", line 152, in need_more_tokens
+    self.stale_possible_simple_keys()
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/scanner.py", line 291, in stale_possible_simple_keys
+    raise ScannerError("while scanning a simple key", key.mark,
+yaml.scanner.ScannerError: while scanning a simple key
+  in "<byte string>", line 10, column 3:
+      housekeeping_temperature:-1000000
+      ^
+could not find expected ':'
+  in "<byte string>", line 11, column 1:
+    
+    ^
+Failing test case: test_generated_housekeeping(
+    self=<__main__.OutputTests testMethod=test_generated_housekeeping>,
+    values=[0, 0, 0, -1000000],
+)
+Explanation:
+    These lines were always and only run by failing test cases:
+        <repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/scanner.py:290
+        <repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/scanner.py:291
+
+======================================================================
+ERROR: test_truncation_yaml (__main__.OutputTests.test_truncation_yaml) (value=12345678)
+Display truncation must not accidentally remove YAML's required key spacing.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/tests/test_yaml.py", line 149, in test_truncation_yaml
+    r = records(f"$10;2;3;0;1;2;{value};{value};|".encode())[0]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/tests/test_yaml.py", line 48, in records
+    value = yaml.load(result.stdout, Loader=UniqueLoader)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/__init__.py", line 81, in load
+    return loader.get_single_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/constructor.py", line 49, in get_single_data
+    node = self.get_single_node()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 36, in get_single_node
+    document = self.compose_document()
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 55, in compose_document
+    node = self.compose_node(None, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 82, in compose_node
+    node = self.compose_sequence_node(anchor)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 111, in compose_sequence_node
+    node.value.append(self.compose_node(node, index))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 127, in compose_mapping_node
+    while not self.check_event(MappingEndEvent):
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/parser.py", line 98, in check_event
+    self.current_event = self.state()
+                         ^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/parser.py", line 428, in parse_block_mapping_key
+    if self.check_token(KeyToken):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/scanner.py", line 115, in check_token
+    while self.need_more_tokens():
+          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/scanner.py", line 152, in need_more_tokens
+    self.stale_possible_simple_keys()
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/scanner.py", line 291, in stale_possible_simple_keys
+    raise ScannerError("while scanning a simple key", key.mark,
+yaml.scanner.ScannerError: while scanning a simple key
+  in "<byte string>", line 9, column 3:
+      housekeeping_intensity:12345678
+      ^
+could not find expected ':'
+  in "<byte string>", line 10, column 3:
+      housekeeping_temperature:12345678
+      ^
+
+======================================================================
+ERROR: test_truncation_yaml (__main__.OutputTests.test_truncation_yaml) (value=123456789)
+Display truncation must not accidentally remove YAML's required key spacing.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/tests/test_yaml.py", line 149, in test_truncation_yaml
+    r = records(f"$10;2;3;0;1;2;{value};{value};|".encode())[0]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/tests/test_yaml.py", line 48, in records
+    value = yaml.load(result.stdout, Loader=UniqueLoader)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/__init__.py", line 81, in load
+    return loader.get_single_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/constructor.py", line 49, in get_single_data
+    node = self.get_single_node()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 36, in get_single_node
+    document = self.compose_document()
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 55, in compose_document
+    node = self.compose_node(None, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 82, in compose_node
+    node = self.compose_sequence_node(anchor)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 111, in compose_sequence_node
+    node.value.append(self.compose_node(node, index))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 127, in compose_mapping_node
+    while not self.check_event(MappingEndEvent):
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/parser.py", line 98, in check_event
+    self.current_event = self.state()
+                         ^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/parser.py", line 428, in parse_block_mapping_key
+    if self.check_token(KeyToken):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/scanner.py", line 115, in check_token
+    while self.need_more_tokens():
+          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/scanner.py", line 152, in need_more_tokens
+    self.stale_possible_simple_keys()
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/scanner.py", line 291, in stale_possible_simple_keys
+    raise ScannerError("while scanning a simple key", key.mark,
+yaml.scanner.ScannerError: while scanning a simple key
+  in "<byte string>", line 9, column 3:
+      housekeeping_intensity:23456789
+      ^
+could not find expected ':'
+  in "<byte string>", line 10, column 3:
+      housekeeping_temperature:23456789
+      ^
+
+======================================================================
+ERROR: test_truncation_yaml (__main__.OutputTests.test_truncation_yaml) (value=-1234567)
+Display truncation must not accidentally remove YAML's required key spacing.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/tests/test_yaml.py", line 149, in test_truncation_yaml
+    r = records(f"$10;2;3;0;1;2;{value};{value};|".encode())[0]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/tests/test_yaml.py", line 48, in records
+    value = yaml.load(result.stdout, Loader=UniqueLoader)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/__init__.py", line 81, in load
+    return loader.get_single_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/constructor.py", line 49, in get_single_data
+    node = self.get_single_node()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 36, in get_single_node
+    document = self.compose_document()
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 55, in compose_document
+    node = self.compose_node(None, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 82, in compose_node
+    node = self.compose_sequence_node(anchor)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 111, in compose_sequence_node
+    node.value.append(self.compose_node(node, index))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 127, in compose_mapping_node
+    while not self.check_event(MappingEndEvent):
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/parser.py", line 98, in check_event
+    self.current_event = self.state()
+                         ^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/parser.py", line 428, in parse_block_mapping_key
+    if self.check_token(KeyToken):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/scanner.py", line 115, in check_token
+    while self.need_more_tokens():
+          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/scanner.py", line 152, in need_more_tokens
+    self.stale_possible_simple_keys()
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/scanner.py", line 291, in stale_possible_simple_keys
+    raise ScannerError("while scanning a simple key", key.mark,
+yaml.scanner.ScannerError: while scanning a simple key
+  in "<byte string>", line 9, column 3:
+      housekeeping_intensity:-1234567
+      ^
+could not find expected ':'
+  in "<byte string>", line 10, column 3:
+      housekeeping_temperature:-1234567
+      ^
+
+======================================================================
+ERROR: test_truncation_yaml (__main__.OutputTests.test_truncation_yaml) (value=-123456789)
+Display truncation must not accidentally remove YAML's required key spacing.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/tests/test_yaml.py", line 149, in test_truncation_yaml
+    r = records(f"$10;2;3;0;1;2;{value};{value};|".encode())[0]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/tests/test_yaml.py", line 48, in records
+    value = yaml.load(result.stdout, Loader=UniqueLoader)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/__init__.py", line 81, in load
+    return loader.get_single_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/constructor.py", line 49, in get_single_data
+    node = self.get_single_node()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 36, in get_single_node
+    document = self.compose_document()
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 55, in compose_document
+    node = self.compose_node(None, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 82, in compose_node
+    node = self.compose_sequence_node(anchor)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 111, in compose_sequence_node
+    node.value.append(self.compose_node(node, index))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/composer.py", line 127, in compose_mapping_node
+    while not self.check_event(MappingEndEvent):
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/parser.py", line 98, in check_event
+    self.current_event = self.state()
+                         ^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/parser.py", line 428, in parse_block_mapping_key
+    if self.check_token(KeyToken):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/scanner.py", line 115, in check_token
+    while self.need_more_tokens():
+          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/scanner.py", line 152, in need_more_tokens
+    self.stale_possible_simple_keys()
+  File "<repo>/.pixi/envs/default/lib/python3.12/site-packages/yaml/scanner.py", line 291, in stale_possible_simple_keys
+    raise ScannerError("while scanning a simple key", key.mark,
+yaml.scanner.ScannerError: while scanning a simple key
+  in "<byte string>", line 9, column 3:
+      housekeeping_intensity:23456789
+      ^
+could not find expected ':'
+  in "<byte string>", line 10, column 3:
+      housekeeping_temperature:23456789
+      ^
+
+======================================================================
+FAIL: test_malformed_dropped (__main__.OutputTests.test_malformed_dropped) (packet=b'$10;2;3;0;bad;|')
+Drop malformed and incomplete packets, then recover the next valid packet.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/tests/test_yaml.py", line 119, in test_malformed_dropped
+    self.assertEqual(len(result), 1)
+AssertionError: 2 != 1
+
+======================================================================
+FAIL: test_malformed_dropped (__main__.OutputTests.test_malformed_dropped) (packet=b'$1;-1;2;;|')
+Drop malformed and incomplete packets, then recover the next valid packet.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/tests/test_yaml.py", line 119, in test_malformed_dropped
+    self.assertEqual(len(result), 1)
+AssertionError: 2 != 1
+
+======================================================================
+FAIL: test_malformed_dropped (__main__.OutputTests.test_malformed_dropped) (packet=b'$99;2;3;|')
+Drop malformed and incomplete packets, then recover the next valid packet.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/tests/test_yaml.py", line 119, in test_malformed_dropped
+    self.assertEqual(len(result), 1)
+AssertionError: 2 != 1
+
+======================================================================
+FAIL: test_malformed_dropped (__main__.OutputTests.test_malformed_dropped) (packet=b'$10;2;3;0;1;2;3;4;5;|')
+Drop malformed and incomplete packets, then recover the next valid packet.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/tests/test_yaml.py", line 119, in test_malformed_dropped
+    self.assertEqual(len(result), 1)
+AssertionError: 2 != 1
+
+----------------------------------------------------------------------
+Ran 19 tests in 57.767s
+
+FAILED (failures=4, errors=5)
