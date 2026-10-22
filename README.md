@@ -1,4 +1,4 @@
-<img src="https://reason.rey.wiki/visitors/titan-protocol-badge-simple.png?src=handmade" alt="Titan protocol decoder" width="128" align="right">
+<p align="center"><img src="https://reason.rey.wiki/visitors/titan-protocol-badge-simple.png?src=handmade" alt="Titan protocol decoder" width="512"></p>
 
 # What is this
 
