@@ -51,11 +51,11 @@ jobs:
         run: ./test.sh 2>&1 | tee test-sh.log || true   # failures are reported below, not fatal
 
       - name: Write job summary
-        if: always()
+        if: "!cancelled()"
         run: pixi run python tests/ci_summary.py test-sh.log >> "$GITHUB_STEP_SUMMARY"
 
       - name: Publish reports to the ci-reports branch (plain git)
-        if: always() && github.event_name != 'pull_request'
+        if: "!cancelled() && github.event_name != 'pull_request'"
         env:
           TOKEN: ${{ github.token }}
         run: |
@@ -73,7 +73,7 @@ jobs:
           echo "Reports: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/tree/ci-reports" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Report failed tests (known defects do not fail the job)
-        if: always()
+        if: "!cancelled()"
         run: |
           # Test failures are reported as warnings; DEFECTS.md lists them as known problems.
           # The job fails only if test.sh did not finish (no stage summary), which is a harness problem.
