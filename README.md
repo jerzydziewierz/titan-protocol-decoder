@@ -1,6 +1,6 @@
 # This is the `autotests` branch
 
-<img src="https://reason.rey.wiki/visitors/titan-protocol-badge.png?src=autotests" alt="Titan protocol decoder" width="128" align="right">
+<p align="center"><img src="https://reason.rey.wiki/visitors/titan-protocol-badge.png?src=autotests" alt="Titan protocol decoder" width="512"></p>
 
 [![tests](https://github.com/jerzydziewierz/titan-protocol-decoder/actions/workflows/tests.yml/badge.svg?branch=autotests)](https://github.com/jerzydziewierz/titan-protocol-decoder/actions/workflows/tests.yml?query=branch%3Aautotests)
 
