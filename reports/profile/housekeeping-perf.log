@@ -1,0 +1,2 @@
+[ perf record: Woken up 46 times to write data ]
+[ perf record: Captured and wrote 11.468 MB /home/runner/work/titan-protocol-decoder/titan-protocol-decoder/reports/profile/housekeeping.perf.data (1424 samples) ]

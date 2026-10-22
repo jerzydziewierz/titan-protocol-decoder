@@ -1,0 +1,15 @@
+[ 10%] Building CXX object CMakeFiles/titan.dir/src/titan.cpp.o
+[ 20%] Linking CXX static library libtitan.a
+[ 20%] Built target titan
+[ 30%] Building CXX object CMakeFiles/recode.dir/src/main.cpp.o
+[ 40%] Building CXX object CMakeFiles/titan-tests.dir/tests/tests.cpp.o
+[ 50%] Linking CXX executable recode
+[ 50%] Built target recode
+[ 60%] Building CXX object CMakeFiles/titan-no-heap.dir/tests/no_heap.cpp.o
+[ 70%] Linking CXX executable titan-no-heap
+[ 70%] Built target titan-no-heap
+[ 80%] Building CXX object CMakeFiles/titan-resource-probe.dir/tests/resource_probe.cpp.o
+[ 90%] Linking CXX executable titan-tests
+[100%] Linking CXX executable titan-resource-probe
+[100%] Built target titan-tests
+[100%] Built target titan-resource-probe
