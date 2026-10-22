@@ -32,7 +32,9 @@ Requirements in addition to the `handmade` ones: `pixi` (the environment uses th
 
 ### GitHub Actions
 
-`.github/workflows/tests.yml` runs `./test.sh` on each push to `autotests`, on each pull request, and on manual start ("Run workflow" on the Actions tab). Each run shows a report on its summary page: stage results, C++ and heap-guard results, failing Python subcases, mutations, benchmark and profile timings. `tests/ci_summary.py` writes this report. The full `reports/` folder, with the flame graph in `reports/profile/index.html`, is attached to the run as the `reports` artifact. The job fails while `DEFECTS.md` has open defects, because `test.sh` then returns nonzero. The workflow uses only GitHub-owned actions pinned by commit SHA, a pixi binary checked by SHA-256, Anaconda `main` packages through `pixi.lock`, and Ubuntu apt for `time`, `strace` and `perf`.
+`.github/workflows/tests.yml` runs `./test.sh` on each push to `autotests`, on each pull request, and on manual start ("Run workflow" on the Actions tab). Each run shows a report on its summary page: stage results, C++ and heap-guard results, failing Python subcases, mutations, benchmark and profile timings. `tests/ci_summary.py` writes this report. After each push run, the full `reports/` folder and `test-sh.log` are force-pushed as one commit to the `ci-reports` branch; the branch keeps only the latest run. The flame graph is `reports/profile/index.html` on that branch. Download it and open it in a browser. The job fails while `DEFECTS.md` has open defects, because `test.sh` then returns nonzero.
+
+The workflow imports no actions (no `uses:` lines). It uses shell steps only: plain `git` for checkout and for publishing the reports, a pixi binary checked by SHA-256, Anaconda `main` packages through `pixi.lock`, and Ubuntu apt for `time`, `strace` and `perf`. The runner image itself (`ubuntu-24.04`) is provided by GitHub.
 
 `./test.sh` runs these stages:
 
