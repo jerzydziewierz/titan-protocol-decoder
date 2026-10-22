@@ -1,5 +1,7 @@
 # This is the `autotests` branch
 
+<img src="https://reason.rey.wiki/visitors/titan-protocol-badge.png?src=autotests-readme" alt="Titan protocol decoder" width="128" align="right">
+
 [![tests](https://github.com/jerzydziewierz/titan-protocol-decoder/actions/workflows/tests.yml/badge.svg?branch=autotests)](https://github.com/jerzydziewierz/titan-protocol-decoder/actions/workflows/tests.yml?query=branch%3Aautotests)
 
 Do NOT merge into `handmade` branch!
