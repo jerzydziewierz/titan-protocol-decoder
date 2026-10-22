@@ -1,8 +1,8 @@
 # What is this
 
 There are two branches here:
-* Handmade -- everything was written by hand.
-* Auto -- I have used tooling to build wide range of tests.
+* `git checkout handmade` -- everything was written by hand.
+* `git checkout autotests` -- I have used tooling to build wide range of tests.
 
 # Assumptions
 
@@ -49,4 +49,4 @@ The following is required:
 
 # Test suite
 
-Tests have been built with tooling, hence, they are held in separate branch, `autotests`
+Tests have been built with tooling, hence, they are held in separate branch, `git checkout autotests`
