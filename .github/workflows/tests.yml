@@ -1,0 +1,66 @@
+# Run ./test.sh (all stages, extensive mode) and publish the report.
+# Supply chain: GitHub-owned actions pinned by commit SHA; pixi binary checked by SHA-256;
+# Python packages from the Anaconda main channel through pixi.lock; system tools from Ubuntu apt.
+name: tests
+
+on:
+  push:
+    branches: [autotests]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      PIXI_VERSION: "0.81.0"
+      PIXI_SHA256: "248510f5f75460a2ae4ec62d761e15c0191dc35db3b1da6f82d9f17c6017051d"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Install system tools (time, strace, perf)
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q time strace
+          # perf must match the runner kernel; the profile stage works without it, but has no flame graph.
+          sudo apt-get install -y -q linux-tools-common "linux-tools-$(uname -r)" || echo "::warning::perf is not available for kernel $(uname -r)"
+          sudo sysctl -w kernel.perf_event_paranoid=2
+
+      - name: Install pixi (SHA-256 checked)
+        run: |
+          curl -fsSL -o pixi "https://github.com/prefix-dev/pixi/releases/download/v${PIXI_VERSION}/pixi-x86_64-unknown-linux-musl"
+          echo "${PIXI_SHA256}  pixi" | sha256sum -c -
+          install -m 755 pixi "$HOME/.local/bin/pixi" -D
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Run all tests (./test.sh)
+        id: tests
+        run: |
+          set +e
+          ./test.sh 2>&1 | tee test-sh.log
+          echo "status=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: Write job summary
+        if: always()
+        run: pixi run python tests/ci_summary.py test-sh.log >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9  # v7.0.2
+        with:
+          name: reports
+          path: |
+            reports/
+            test-sh.log
+            !reports/**/*.perf.data
+            !reports/**/*.perf.data.old
+
+      - name: Fail the job if a test stage failed
+        if: steps.tests.outputs.status != '0'
+        run: |
+          echo "::error::test.sh returned ${{ steps.tests.outputs.status }}; see the job summary and DEFECTS.md"
+          exit 1

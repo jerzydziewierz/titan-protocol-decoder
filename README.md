@@ -30,6 +30,10 @@ Requirements in addition to the `handmade` ones: `pixi` (the environment uses th
 * `pixi run check` : the normal (non-extensive) correctness run. `ctest --test-dir build-autotests --output-on-failure` runs the C++ suites only.
 * `pixi run status` / `pixi run stop` : show or stop a running campaign, from a second terminal.
 
+### GitHub Actions
+
+`.github/workflows/tests.yml` runs `./test.sh` on each push to `autotests`, on each pull request, and on manual start ("Run workflow" on the Actions tab). Each run shows a report on its summary page: stage results, C++ and heap-guard results, failing Python subcases, mutations, benchmark and profile timings. `tests/ci_summary.py` writes this report. The full `reports/` folder, with the flame graph in `reports/profile/index.html`, is attached to the run as the `reports` artifact. The job fails while `DEFECTS.md` has open defects, because `test.sh` then returns nonzero. The workflow uses only GitHub-owned actions pinned by commit SHA, a pixi binary checked by SHA-256, Anaconda `main` packages through `pixi.lock`, and Ubuntu apt for `time`, `strace` and `perf`.
+
 `./test.sh` runs these stages:
 
 | Stage                | What it does                                                                                                                                           | Output in `reports/`                    |
