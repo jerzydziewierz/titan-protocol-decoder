@@ -1,3 +1,5 @@
+<img src="https://reason.rey.wiki/visitors/titan-protocol-badge-simple.png?src=handmade" alt="Titan protocol decoder" width="128" align="right">
+
 # What is this
 
 There are two branches here:
