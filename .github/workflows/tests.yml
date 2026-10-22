@@ -72,11 +72,18 @@ jobs:
               "https://x-access-token:${TOKEN}@${GITHUB_SERVER_URL#https://}/${GITHUB_REPOSITORY}.git" HEAD:ci-reports
           echo "Reports: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/tree/ci-reports" >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Report failed tests (known defects do not fail the job)
+      # GitHub shows at most 10 warnings per step, so stages and tests are reported in separate steps.
+      - name: Report failed stages (known defects do not fail the job)
         if: "!cancelled()"
         run: |
-          # Test failures are reported as warnings; DEFECTS.md lists them as known problems.
-          # The job fails only if test.sh did not finish (no stage summary), which is a harness problem.
+          # DEFECTS.md lists these failures as known problems.
           grep '^FAIL  ' test-sh.log | sed 's/^FAIL  /::warning title=Failed stage::/' || true
+
+      - name: Report failing tests (known defects do not fail the job)
+        if: "!cancelled()"
+        run: |
           grep -h -E '^(FAIL|ERROR): ' reports/*python.log | sort -u | sed 's/^/::warning title=Failing test::/' || true
-          grep -q -E '^(PASS|FAIL)  profile$' test-sh.log || { echo "::error::test.sh did not finish"; exit 1; }
+
+      - name: Check that test.sh finished
+        if: "!cancelled()"
+        run: grep -q -E '^(PASS|FAIL)  profile$' test-sh.log || { echo "::error::test.sh did not finish"; exit 1; }

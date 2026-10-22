@@ -1,5 +1,7 @@
 # This is the `autotests` branch
 
+[![tests](https://github.com/jerzydziewierz/titan-protocol-decoder/actions/workflows/tests.yml/badge.svg?branch=autotests)](https://github.com/jerzydziewierz/titan-protocol-decoder/actions/workflows/tests.yml?query=branch%3Aautotests)
+
 Do NOT merge into `handmade` branch!
 
 see the `README.md` in `handmade` branch for why.
@@ -32,7 +34,7 @@ Requirements in addition to the `handmade` ones: `pixi` (the environment uses th
 
 ### GitHub Actions
 
-`.github/workflows/tests.yml` runs `./test.sh` on each push to `autotests`, on each pull request, and on manual start ("Run workflow" on the Actions tab). Each run shows a report on its summary page: stage results, C++ and heap-guard results, failing Python subcases, mutations, benchmark and profile timings. `tests/ci_summary.py` writes this report. After each push run, the full `reports/` folder and `test-sh.log` are force-pushed as one commit to the `ci-reports` branch; the branch keeps only the latest run. The flame graph is `reports/profile/index.html` on that branch. Download it and open it in a browser. Failing stages and failing tests are shown as warnings on the run page, but they do not fail the job: `DEFECTS.md` lists them as known problems. The job fails only if `test.sh` does not finish.
+`.github/workflows/tests.yml` runs `./test.sh` on each push to `autotests`, on each pull request, and on manual start ("Run workflow" on the Actions tab). Each run shows a report on its summary page: stage results, C++ and heap-guard results, failing Python subcases, mutations, benchmark and profile timings. `tests/ci_summary.py` writes this report. After each push run, the full `reports/` folder and `test-sh.log` are force-pushed as one commit to the `ci-reports` branch; the branch keeps only the latest run. The flame graph is `reports/profile/index.html` on that branch. Download it and open it in a browser. Failing stages and failing tests are shown as warnings on the run page, but they do not fail the job: `DEFECTS.md` lists them as known problems. The job fails only if `test.sh` does not finish or a setup step fails. The badge at the top of this README shows the result of the latest run on `autotests`. GitHub makes the image, and it shows "passing" while only known defects fail.
 
 The workflow imports no actions (no `uses:` lines). It uses shell steps only: plain `git` for checkout and for publishing the reports, a pixi binary checked by SHA-256, Anaconda `main` packages through `pixi.lock`, and Ubuntu apt for `time`, `strace` and `perf`. The runner image itself (`ubuntu-24.04`) is provided by GitHub.
 
