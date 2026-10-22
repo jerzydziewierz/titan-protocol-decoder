@@ -1,4 +1,6 @@
 tmp/
 .idea
 results/result.yaml
+build/
+
 
