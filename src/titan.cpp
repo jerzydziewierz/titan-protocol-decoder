@@ -1,4 +1,5 @@
 #include "titan.hpp"
+#include "format.hpp"
 #include <string_view>
 #include <cstdint>
 #include <charconv>
@@ -14,41 +15,23 @@ namespace titan {
         return sink.write(sink.descriptor, std::span<const char>{message.data(), message.size()});
     }
 
-    /// convert integer to chars, format and output with put_msg;
+    /// format with format_int (src/format.cpp) and output with put_msg.
+    // Post-submission fix (George Rey): a value that does not fit in eight characters lost its
+    // leading digits and its sign, e.g. -123456789 printed as 23456789. Now it prints as
+    // " (large)" or "-(large)"; the output stays eight characters.
     bool put_int(const Output sink, const std::int64_t message) noexcept {
-        // Post-submission fix (George Rey): a value that does not fit in eight characters
-        // lost its leading digits and its sign, e.g. -123456789 printed as 23456789.
-        // Now such a value prints as " (large)" or "-(large)"; the output stays eight characters.
-        if (message >= 100'000'000) {return put_msg(sink, " (large)");}
-        if (message <= -10'000'000) {return put_msg(sink, "-(large)");}
-        bool write_success = true;
-        char out_chars[21];
-        const auto result = std::to_chars(out_chars, out_chars+sizeof(out_chars), message);
-        if (result.ec != std::errc{}) {return false;}; // this will give write-error on failure of converting int to str, which is an OK interpretation.
-        std::string_view digits{out_chars, static_cast<std::size_t>(result.ptr - out_chars)};
-
-        // Pad on the left to eight characters.
-        constexpr std::string_view padding = "        ";
-        write_success &= put_msg(sink, padding.substr(0, padding.size() - digits.size()));
-        write_success &= put_msg(sink, digits);
-        return write_success;
+        char out_chars[format::int_width];
+        const std::size_t used = format::format_int(message, out_chars);
+        return put_msg(sink, std::string_view{out_chars, used});
     }
 
-    /// Display at most 32 bytes as uppercase hex pairs, with spaces between bytes.
-    ///
+    /// Display at most 32 bytes as uppercase hex pairs, with spaces between bytes (format_hex).
     bool put_hex(const Output sink, const std::string_view message) noexcept {
-        bool write_success = true;
-        constexpr char hex[] = "0123456789ABCDEF";
-        char out_chars[32 * 3 - 1];
-        std::size_t used = 0;
-        for (unsigned char byte : message.substr(0, 32)) {
-            if (used != 0) out_chars[used++] = ' ';
-            out_chars[used++] = hex[byte >> 4];
-            out_chars[used++] = hex[byte & 15];
-        }
-        write_success &= put_msg(sink, std::string_view{out_chars, used});
-        if (message.size() > 32) {write_success&=put_msg(sink, std::string_view{" ..."});};
-        return write_success;
+        static_assert(format::hex_capacity == format::hex_max_bytes * 3 - 1 + 4, "32 pairs, 31 spaces, \" ...\"");
+        char out_chars[format::hex_capacity];
+        const std::size_t used = format::format_hex(
+            reinterpret_cast<const unsigned char*>(message.data()), message.size(), out_chars);
+        return put_msg(sink, std::string_view{out_chars, used});
     }
 
 

@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_library(titan STATIC src/titan.cpp)
+add_library(titan STATIC src/titan.cpp src/format.cpp)
 target_include_directories(titan PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 
 add_executable(recode src/main.cpp)

@@ -5,6 +5,7 @@
 There are two branches here:
 * `git checkout handmade` -- everything was written by hand.
 * `git checkout autotests` -- I have used tooling to build wide range of tests.
+* `git checkout lean-proof` -- formal proofs of `put_int` and `put_hex` (Lean 4, CBMC, ESBMC). See `proof/README.md`.
 
 # Assumptions
 

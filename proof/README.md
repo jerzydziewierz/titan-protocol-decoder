@@ -1,6 +1,11 @@
 # Formal proof: `put_hex` and `put_int`
 
-Local only. Core Lean 4 (toolchain in `lean-toolchain`), no Mathlib, no external service.
+Local only, no external service. Two methods check the same two functions:
+
+* **Lean 4** (core only, toolchain in `lean-toolchain`, no Mathlib) proves properties of a model, for all inputs, with no bound.
+* **Bounded model checking** (CBMC and ESBMC, in `bmc/`) proves properties of the real C++ code in `src/format.cpp`, for all inputs up to a bound.
+
+`put_int` and `put_hex` in `src/titan.cpp` only send the result of `format_int` and `format_hex` (`src/format.cpp`) to the sink. `format.cpp` uses no standard library, so that both checkers can read it.
 
 ## Run
 
@@ -48,6 +53,40 @@ It does three steps: `lake build` checks all proofs, `lake exe golden` prints th
 
 Undo each change after the check.
 
-## What the proof does not cover
+## Bounded model checking (`bmc/`)
 
-The theorems are about `Model.lean`, not about the compiled C++ code. The bridge reduces this gap but does not close it: it is exhaustive for `put_hex` inputs of 0–2 bytes and samples longer inputs, and it samples `put_int` at all powers of ten, the `int64_t` limits and −2000…2000. The model also assumes that `std::to_chars` and `std::from_chars` behave as the standard says.
+```
+bmc/run.sh           # about 8 minutes
+bmc/run.sh --quick   # about 45 seconds, without CBMC format_int
+```
+
+Each line must say `VERIFICATION SUCCESSFUL`. The tools check the real `src/format.cpp`. Array bounds, pointer use, signed overflow and loop unwinding are checked automatically; the harnesses add the properties.
+
+| Harness | Inputs | Checks | ESBMC | CBMC |
+|---|---|---|---|---|
+| `put_int.cpp` | every `int64_t` (no bound) | I1–I4 | 26 s | 7 min |
+| `put_hex.cpp` | every message of 0–34 bytes | H2–H5 | 14 s | 2 s |
+
+Tool versions: CBMC 5.95.1 (Ubuntu `apt`), ESBMC 8.6.0 (GitHub release, SHA-256 checked, in `~/opt/esbmc-v8.6/`; set `ESBMC` to use another path).
+
+Mutation check with ESBMC: each change below makes the run fail.
+
+| Change in `src/format.cpp` / `format.hpp` | Result |
+|---|---|
+| `v >= 100000000` becomes `v > 100000000` | array bounds violated (9 digits in 8 characters) |
+| the `-` sign is not written | read-back assertion fails |
+| low nibble uses `data[i] >> 4` | read-back assertion fails |
+| `hex_capacity = 98` | array bounds violated |
+
+Tool limits that shaped `src/format.cpp`:
+
+* CBMC 5.95 accepts C++11 at most and cannot parse the GCC 13 standard headers. ESBMC replaces `std::string_view` with its own model, which has no `find_first_of(char)`. Thus `format.cpp` includes only `<cstddef>` and `<cstdint>`.
+* `std::to_chars` on 64 bits did not finish in ESBMC within 15 minutes. `format_int` checks the range first, and then divides a 32-bit value at most 8 times.
+* CBMC 5.95 initialises namespace constants in alphabetical order. `hex_capacity` is therefore the literal 99; a `static_assert` in `titan.cpp` checks it against `hex_max_bytes`.
+* CBMC did not find a function body when the definition had `const` parameters and the declaration did not. It then treats the result as "any value". `run.sh` fails when it sees "no body for function titan".
+
+## What is not covered
+
+* Lean: the theorems are about `Model.lean`, not about the compiled C++ code. The bridge compares the two on 69 957 inputs; this is a test, not a proof.
+* Bounded model checking: `format_hex` is checked up to 34 bytes. Longer messages run the same code (at most 32 pairs, then `" ..."`), but no tool proves this step. The checkers assume that the compiler translates the code as the C++ standard says.
+* The wrappers `put_int` and `put_hex` (two lines each) and the sink are not checked by a tool.
