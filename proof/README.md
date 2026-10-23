@@ -31,10 +31,9 @@ It does three steps: `lake build` checks all proofs, `lake exe golden` prints th
 | H6 | `putHex_injective` | different messages of at most 32 bytes give different text |
 | I1 | `putInt_length` | `put_int` always writes 8 characters |
 | I2 | `putInt_roundtrip` | for −10^7 < v < 10^8, the text reads back to v |
-| I3 | `putInt_loses_sign` | finding: `-123456789` prints as `23456789` |
-| I4 | `putInt_not_injective` | finding: two different `int64_t` values print the same |
-
-I3 and I4 are bugs in `put_int`: the YAML loses data for values outside the I2 range. The caller also passes `uint64_t` fields to `put_int(int64_t)`.
+| I3 | `putInt_large` | v ≥ 10^8 prints as `" (large)"` |
+| I4 | `putInt_large_neg` | v ≤ −10^7 prints as `"-(large)"` |
+| I5 | `putInt_no_silent_loss` | two values print the same only if they are equal, or both are out of range on the same side |
 
 ## Mutation check (the proofs are not vacuous)
 
@@ -44,6 +43,8 @@ I3 and I4 are bugs in `put_int`: the YAML loses data for values outside the I2 r
 | `Model.lean`: `hexBufferSize` is `32 * 3 - 2` | H2 fails |
 | `titan.cpp`: lowercase hex table | bridge: 55 734 mismatches |
 | `titan.cpp`: `substr(0, 33)` | UBSan: index 95 out of bounds |
+| `Model.lean`: negative limit `-10^8` | I1 and I2 fail |
+| `titan.cpp`: `message > 100'000'000` | bridge: 1 mismatch at 10^8 (17 characters) |
 
 Undo each change after the check.
 

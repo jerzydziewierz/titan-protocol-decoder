@@ -40,11 +40,14 @@ def decDigits (n : Nat) : List Char :=
 def intChars (v : Int) : List Char :=
   if v < 0 then '-' :: decDigits v.natAbs else decDigits v.natAbs
 
-/-- `put_int`: keep the rightmost eight characters, pad on the left with spaces to eight. -/
+/-- `put_int`: a fixed marker if the value does not fit in eight characters, else pad on the left
+with spaces to eight. -/
 def putInt (v : Int) : List Char :=
-  let d := intChars v
-  let d' := d.drop (d.length - 8)
-  List.replicate (8 - d'.length) ' ' ++ d'
+  if v ≥ 10^8 then " (large)".toList
+  else if v ≤ -10^7 then "-(large)".toList
+  else
+    let d := intChars v
+    List.replicate (8 - d.length) ' ' ++ d
 
 /-- The range of `std::int64_t`. -/
 def isInt64 (v : Int) : Prop := -2^63 ≤ v ∧ v < 2^63

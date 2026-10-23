@@ -131,28 +131,38 @@ theorem dropWhile_replicate (k : Nat) (l : List Char) :
   | zero => rfl
   | succ k ih => simp [List.replicate_succ, ih]
 
+theorem hexDigit_ne_paren : ∀ n, n < 16 → hexDigit n ≠ ')' := by decide
+
+/-- In range, `intChars` fits in eight characters. -/
+theorem intChars_length (v : Int) (lo : -10^7 < v) (hi : v < 10^8) : (intChars v).length ≤ 8 := by
+  unfold intChars
+  split
+  · have := decDigits_length v.natAbs 6 (by omega); simp; omega
+  · have := decDigits_length v.natAbs 7 (by omega); omega
+
 /-- I1: the output of `put_int` always has eight characters. -/
 theorem putInt_length (v : Int) : (putInt v).length = 8 := by
-  simp only [putInt, List.length_append, List.length_replicate, List.length_drop]
-  omega
+  unfold putInt
+  split
+  · rfl
+  · split
+    · rfl
+    · have := intChars_length v (by omega) (by omega)
+      simp only [List.length_append, List.length_replicate]
+      omega
 
 /-- I2: in the range that fits in eight characters, the output gives back the value. -/
 theorem putInt_roundtrip (v : Int) (lo : -10^7 < v) (hi : v < 10^8) :
     readInt (putInt v) = v := by
-  unfold putInt intChars
+  have h1 : ¬ v ≥ 10^8 := by omega
+  have h2 : ¬ v ≤ -10^7 := by omega
+  simp only [putInt, h1, h2, ite_false]
+  unfold intChars
   split
-  · -- negative: `-` and at most seven digits
-    have hl := decDigits_length v.natAbs 6 (by omega)
-    have hd : ('-' :: decDigits v.natAbs).length - 8 = 0 := by simp; omega
-    dsimp only
-    rw [hd, List.drop_zero, readInt, dropWhile_replicate]
+  · rw [readInt, dropWhile_replicate]
     simp [List.dropWhile, readDec_decDigits]
     omega
-  · -- zero or positive: at most eight digits
-    have hl := decDigits_length v.natAbs 7 (by omega)
-    have hd : (decDigits v.natAbs).length - 8 = 0 := by omega
-    dsimp only
-    rw [hd, List.drop_zero, readInt, dropWhile_replicate, dropWhile_space_digits]
+  · rw [readInt, dropWhile_replicate, dropWhile_space_digits]
     have hne : ∀ ds, decDigits v.natAbs ≠ '-' :: ds := by
       intro ds h
       obtain ⟨k, hk, hc⟩ := decDigits_digits v.natAbs '-' (by rw [h]; simp)
@@ -161,15 +171,61 @@ theorem putInt_roundtrip (v : Int) (lo : -10^7 < v) (hi : v < 10^8) :
     · rename_i ds h; exact absurd h (hne ds)
     · rw [readDec_decDigits]; omega
 
-/-- I3 (finding): a negative value with more than seven digits loses its sign. -/
-theorem putInt_loses_sign : putInt (-123456789) = "23456789".toList := by
-  simp [putInt, intChars, decDigits, hexDigit]
+/-- I3: a value of 10^8 or more prints as `" (large)"`. -/
+theorem putInt_large (v : Int) (h : v ≥ 10^8) : putInt v = " (large)".toList := by
+  unfold putInt; rw [if_pos h]
 
-/-- I4 (finding): two different `int64_t` values give the same text, so the YAML loses data. -/
-theorem putInt_not_injective :
-    ∃ a b, isInt64 a ∧ isInt64 b ∧ a ≠ b ∧ putInt a = putInt b :=
-  ⟨123456789, -123456789, by unfold isInt64; omega, by unfold isInt64; omega, by decide,
-    by simp [putInt, intChars, decDigits, hexDigit]⟩
+/-- I4: a value of −10^7 or less prints as `"-(large)"`. -/
+theorem putInt_large_neg (v : Int) (h : v ≤ -10^7) : putInt v = "-(large)".toList := by
+  have : ¬ v ≥ 10^8 := by omega
+  unfold putInt; rw [if_neg this, if_pos h]
+
+/-- In range, the output has no `)`, so it never looks like a marker. -/
+theorem putInt_no_paren (v : Int) (lo : -10^7 < v) (hi : v < 10^8) : ')' ∉ putInt v := by
+  have h1 : ¬ v ≥ 10^8 := by omega
+  have h2 : ¬ v ≤ -10^7 := by omega
+  simp only [putInt, h1, h2, ite_false, List.mem_append, List.mem_replicate]
+  intro h
+  rcases h with ⟨_, h⟩ | h
+  · exact absurd h (by decide)
+  · unfold intChars at h
+    have hd : ')' ∉ decDigits v.natAbs := fun hm => by
+      obtain ⟨k, hk, hc⟩ := decDigits_digits v.natAbs ')' hm
+      exact hexDigit_ne_paren k (by omega) hc.symm
+    split at h
+    · simp at h; exact hd h
+    · exact hd h
+
+/-- I5: `put_int` loses no data silently. Two values give the same text only if they are equal
+or both are out of range on the same side. This holds for every `int64_t` and beyond. -/
+theorem putInt_no_silent_loss (a b : Int) (h : putInt a = putInt b) :
+    a = b ∨ (a ≥ 10^8 ∧ b ≥ 10^8) ∨ (a ≤ -10^7 ∧ b ≤ -10^7) := by
+  have pos : ')' ∈ " (large)".toList := by decide
+  have neg : ')' ∈ "-(large)".toList := by decide
+  have dif : " (large)".toList ≠ "-(large)".toList := by decide
+  by_cases ha : -10^7 < a ∧ a < 10^8
+  · by_cases hb : -10^7 < b ∧ b < 10^8
+    · left
+      rw [← putInt_roundtrip a ha.1 ha.2, ← putInt_roundtrip b hb.1 hb.2, h]
+    · exfalso
+      apply putInt_no_paren a ha.1 ha.2
+      rw [h]
+      by_cases hb' : b ≥ 10^8
+      · rw [putInt_large b hb']; exact pos
+      · rw [putInt_large_neg b (by omega)]; exact neg
+  · by_cases hb : -10^7 < b ∧ b < 10^8
+    · exfalso
+      apply putInt_no_paren b hb.1 hb.2
+      rw [← h]
+      by_cases ha' : a ≥ 10^8
+      · rw [putInt_large a ha']; exact pos
+      · rw [putInt_large_neg a (by omega)]; exact neg
+    · right
+      by_cases ha' : a ≥ 10^8 <;> by_cases hb' : b ≥ 10^8
+      · left; exact ⟨ha', hb'⟩
+      · rw [putInt_large a ha', putInt_large_neg b (by omega)] at h; exact absurd h dif
+      · rw [putInt_large_neg a (by omega), putInt_large b hb'] at h; exact absurd h (Ne.symm dif)
+      · right; omega
 
 end TitanFormat
 
@@ -177,5 +233,6 @@ end TitanFormat
 #print axioms TitanFormat.putHex_fits_buffer
 #print axioms TitanFormat.putHex_roundtrip
 #print axioms TitanFormat.putHex_injective
+#print axioms TitanFormat.putInt_length
 #print axioms TitanFormat.putInt_roundtrip
-#print axioms TitanFormat.putInt_not_injective
+#print axioms TitanFormat.putInt_no_silent_loss
