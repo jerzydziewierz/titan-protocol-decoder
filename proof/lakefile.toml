@@ -1,0 +1,9 @@
+name = "titan_format"
+defaultTargets = ["TitanFormat", "golden"]
+
+[[lean_lib]]
+name = "TitanFormat"
+
+[[lean_exe]]
+name = "golden"
+root = "Golden"
