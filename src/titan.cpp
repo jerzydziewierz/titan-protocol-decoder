@@ -16,17 +16,19 @@ namespace titan {
 
     /// convert integer to chars, format and output with put_msg;
     bool put_int(const Output sink, const std::int64_t message) noexcept {
+        // Post-submission fix (George Rey): a value that does not fit in eight characters
+        // lost its leading digits and its sign, e.g. -123456789 printed as 23456789.
+        // Now such a value prints as " (large)" or "-(large)"; the output stays eight characters.
+        if (message >= 100'000'000) {return put_msg(sink, " (large)");}
+        if (message <= -10'000'000) {return put_msg(sink, "-(large)");}
         bool write_success = true;
         char out_chars[21];
         const auto result = std::to_chars(out_chars, out_chars+sizeof(out_chars), message);
         if (result.ec != std::errc{}) {return false;}; // this will give write-error on failure of converting int to str, which is an OK interpretation.
         std::string_view digits{out_chars, static_cast<std::size_t>(result.ptr - out_chars)};
 
-        // Keep the rightmost eight digits and pad shorter values on the left.
+        // Pad on the left to eight characters.
         constexpr std::string_view padding = "        ";
-        if (digits.size() > padding.size()) {
-            digits.remove_prefix(digits.size() - padding.size());
-        }
         write_success &= put_msg(sink, padding.substr(0, padding.size() - digits.size()));
         write_success &= put_msg(sink, digits);
         return write_success;
